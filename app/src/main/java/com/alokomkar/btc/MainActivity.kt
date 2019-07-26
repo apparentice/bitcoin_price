@@ -15,9 +15,7 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_scrolling)
         setSupportActionBar(toolbar)
-        fab.setOnClickListener { view ->
-            loadContent()
-        }
+        fab.setOnClickListener { loadContent() }
     }
 
     private fun loadContent() {
