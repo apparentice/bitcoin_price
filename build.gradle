@@ -7,6 +7,8 @@ ext {
     roomVersion = "2.2.0-alpha01"
     materialVersion = "1.0.0"
     gsonVersion = "2.8.5"
+    retrofitVersion = '2.6.0'
+    okhttpVersion = '4.0.1'
 }
 
 buildscript {

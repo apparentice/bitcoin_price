@@ -1,4 +1,4 @@
-package com.alokomkar.btc.data.local
+package com.alokomkar.btc.data.local.dao
 
 import androidx.room.Dao
 

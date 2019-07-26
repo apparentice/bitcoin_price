@@ -6,6 +6,8 @@ import androidx.room.Room
 import androidx.room.RoomDatabase
 import com.alokomkar.btc.AppExecutors
 import com.alokomkar.btc.R
+import com.alokomkar.btc.data.local.dao.CurrentPriceDao
+import com.alokomkar.btc.data.local.entity.CurrentPrice
 
 @Database( entities = [CurrentPrice::class], version = 1 )
 abstract class AppDatabase : RoomDatabase() {

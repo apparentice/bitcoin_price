@@ -1,4 +1,4 @@
-package com.alokomkar.btc.data.remote
+package com.alokomkar.btc.data.remote.network_response
 import com.google.gson.annotations.SerializedName
 
 

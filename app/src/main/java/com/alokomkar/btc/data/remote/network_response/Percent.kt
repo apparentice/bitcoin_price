@@ -1,8 +1,8 @@
-package com.alokomkar.btc.data.remote
+package com.alokomkar.btc.data.remote.network_response
 
 import com.google.gson.annotations.SerializedName
 
-data class Open(
+data class Percent(
     @SerializedName("day")
     var day: Double = 0.0,
     @SerializedName("hour")
