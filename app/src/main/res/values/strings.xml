@@ -1,5 +1,6 @@
 <resources>
     <string name="app_name">btc</string>
+    <string name="local_database_name">LocalDatabase</string>
     <string name="large_text">
         "Material is the metaphor.\n\n"
 

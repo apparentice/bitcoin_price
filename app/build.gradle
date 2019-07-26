@@ -38,6 +38,9 @@ dependencies {
     implementation 'androidx.legacy:legacy-support-v4:1.0.0'
     kapt "androidx.room:room-compiler:$roomVersion"
 
+    //Gson
+    implementation "com.google.code.gson:gson:$gsonVersion"
+
     // Espresso
     // Core library
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.2.0'

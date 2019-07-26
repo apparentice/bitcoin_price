@@ -8,6 +8,8 @@ import com.alokomkar.btc.data.repository.BTCRepositoryImpl
 class BTCApplication : Application() {
 
     private val appExecutors : AppExecutors by lazy { AppExecutors() }
+    // Not required to have instance creation as
+    // lazy returns same instance on subsequent access - rectify post testing
     private val serviceLocator : ServiceLocator by lazy { ServiceLocator.getInstance(this, appExecutors) }
 
     val btcRepository : BTCRepository by lazy { BTCRepositoryImpl(serviceLocator, appExecutors) }
