@@ -9,10 +9,25 @@
         android:layout_height="match_parent"
         tools:context=".MainActivity">
 
-    <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_margin="@dimen/text_margin"
-            android:text="@string/large_text"/>
+    <FrameLayout android:layout_width="match_parent"
+                 android:layout_height="match_parent">
+
+        <androidx.recyclerview.widget.RecyclerView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                android:orientation="vertical"
+                android:padding="@dimen/default_half_margin"/>
+
+        <ProgressBar android:layout_width="wrap_content"
+                     android:layout_height="wrap_content"
+                     android:visibility="gone"
+                     tools:visibility="visible"
+                     android:id="@+id/pbHistory"
+                     android:layout_margin="@dimen/default_big_margin"
+                     android:layout_gravity="center_horizontal"/>
+
+    </FrameLayout>
+
 
 </androidx.core.widget.NestedScrollView>
