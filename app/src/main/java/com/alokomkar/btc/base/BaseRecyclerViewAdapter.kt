@@ -25,6 +25,14 @@ abstract class BaseRecyclerViewAdapter<T, VH : BaseViewHolder<T>> : RecyclerView
         onEmptyOrNot?.invoke(itemsList.isEmpty())
     }
 
+    fun addUnique(item : T) {
+        if( !itemsList.contains(item) ) {
+            itemsList.add(item)
+            notifyItemInserted(itemsList.size - 1)
+        }
+        onEmptyOrNot?.invoke(itemsList.isEmpty())
+    }
+
     fun addAllUnique(list: List<T>) {
         if( itemsList.isEmpty() ) {
             addAll(list)

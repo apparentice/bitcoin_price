@@ -14,12 +14,12 @@ class ServiceLocator private constructor (
     private val appExecutors: AppExecutors
 ){
 
-    private val appDatabase : AppDatabase by lazy { AppDatabase.getInstance(application, appExecutors) }
+    private val appDatabase : AppDatabase by lazy { AppDatabase.getInstance(application) }
     private val retrofitApiProvider : RetrofitApiProvider by lazy { RetrofitApiProvider(application, appExecutors) }
     private val priceService : PriceService by lazy { PriceServiceImpl(retrofitApiProvider.getPriceApiService(), appExecutors) }
 
     val remoteDataSource : RemoteDataSource by lazy { RemoteDataSource( priceService ) }
-    val localDataSource : LocalDataSource by lazy { LocalDataSource( appDatabase ) }
+    val localDataSource : LocalDataSource by lazy { LocalDataSource( appDatabase, appExecutors ) }
 
     //Boolean to track if network is connected
     val isNetworkConnected get() = application.isNetworkAvailable

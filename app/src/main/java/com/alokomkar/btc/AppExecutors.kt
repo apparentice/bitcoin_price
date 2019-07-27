@@ -13,7 +13,7 @@ class AppExecutors private constructor(
 ) {
 
     constructor() : this(
-        Executors.newSingleThreadExecutor(), Executors.newFixedThreadPool(3),
+        Executors.newFixedThreadPool(3), Executors.newFixedThreadPool(3),
         MainThreadExecutor()
     )
 

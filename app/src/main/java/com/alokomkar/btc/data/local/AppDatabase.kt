@@ -21,7 +21,7 @@ abstract class AppDatabase : RoomDatabase() {
 
         @Volatile private var INSTANCE: AppDatabase? = null
 
-        fun getInstance(application: Application, appExecutors: AppExecutors): AppDatabase =
+        fun getInstance(application: Application): AppDatabase =
             INSTANCE ?: synchronized(this) {
                 INSTANCE ?: buildDatabase(application).also { INSTANCE = it }
             }

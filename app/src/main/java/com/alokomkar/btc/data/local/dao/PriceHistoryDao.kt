@@ -11,7 +11,7 @@ import com.alokomkar.btc.data.local.entity.PriceHistory
 abstract class PriceHistoryDao : BaseDao<PriceHistory> {
 
     @Transaction
-    @Query("SELECT * FROM PriceHistory" )
+    @Query("SELECT * FROM PriceHistory ORDER BY timeStamp DESC" )
     abstract fun fetchAll() : LiveData<List<PriceHistory>>
 
 }

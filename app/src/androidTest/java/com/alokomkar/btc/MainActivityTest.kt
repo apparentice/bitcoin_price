@@ -28,7 +28,7 @@ class MainActivityTest {
         onView(withId(R.id.pbCurrentPrice))
             .check(matches(isDisplayed()))
 
-        onView(withId(R.id.pbHistory))
+        onView(withId(R.id.priceRefreshLayout))
             .check(matches(isDisplayed()))
     }
 

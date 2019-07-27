@@ -8,6 +8,8 @@
     <androidx.cardview.widget.CardView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:visibility="gone"
+            android:id="@+id/cvDate"
             app:cardElevation="@dimen/default_half_margin"
             app:cardCornerRadius="@dimen/default_half_margin"
             app:cardBackgroundColor="@color/card_dark_background"
@@ -23,6 +25,7 @@
     <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:id="@+id/tvCurrentPrice"
             android:padding="@dimen/default_half_margin"
             style="@style/TextAppearance.AppCompat.Medium"
     android:text="@string/app_name"/>
