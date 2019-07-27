@@ -53,10 +53,10 @@ class MainActivity : AppCompatActivity() {
                 pbHistory.changeVisibility(status == Status.LOADING)
                 if( status == Status.ERROR ) {
                     Log.d("NetworkResponse", "Failed : " + this.message)
-                    tvPriceHistory.text = "Failed : " + (this.message ?: "Unknown Error")
+
                 }
                 else if( status == Status.SUCCESS ) {
-                    tvPriceHistory.text = "Price Count : " + (it.data?.size ?: 0)
+
                 }
             }
         }
