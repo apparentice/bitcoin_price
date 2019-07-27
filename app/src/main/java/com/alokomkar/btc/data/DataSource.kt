@@ -6,5 +6,5 @@ import com.alokomkar.btc.data.local.entity.PriceHistory
 
 interface DataSource {
     fun getCurrentPrice() : LiveData<CurrentPrice>
-    fun getPriceHistory() : LiveData<ArrayList<PriceHistory>>
+    fun getPriceHistory() : LiveData<List<PriceHistory>>
 }

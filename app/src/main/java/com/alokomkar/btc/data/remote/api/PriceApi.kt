@@ -8,9 +8,9 @@ import retrofit2.http.GET
 
 interface PriceApi {
 
-    @GET
-    fun getCurrentPrice() : Single<CurrentPriceResponse>
+    @GET("ticker/BTCUSD")
+    fun getCurrentPrice() : Flowable<CurrentPriceResponse>
 
-    @GET
+    @GET("history/BTCUSD?period=daily&?format=json")
     fun getPriceHistory() : Flowable<List<PriceHistory>>
 }

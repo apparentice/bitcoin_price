@@ -5,12 +5,22 @@ import com.alokomkar.btc.data.DataSource
 import com.alokomkar.btc.data.local.entity.CurrentPrice
 import com.alokomkar.btc.data.local.entity.PriceHistory
 
-class LocalDataSource( private val appDatabase: AppDatabase ) : DataSource {
-    override fun getCurrentPrice(): LiveData<CurrentPrice> {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+class LocalDataSource( private val appDatabase: AppDatabase ) :  DataSource {
+
+    fun insertPrice( price: CurrentPrice )
+            = appDatabase.currentPriceDao().insert(price)
+
+    fun insertAllPriceHistory( priceHistoryList : List<PriceHistory> )
+    {
+        appDatabase.runInTransaction {
+            priceHistoryList.forEach {  appDatabase.priceHistoryDao().insert(it)  }
+        }
     }
 
-    override fun getPriceHistory(): LiveData<ArrayList<PriceHistory>> {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
-    }
+    //Since there will always be only one entry in database
+    override fun getCurrentPrice(): LiveData<CurrentPrice>
+            = appDatabase.currentPriceDao().fetchCurrentPrice(1)
+
+    override fun getPriceHistory(): LiveData<List<PriceHistory>>
+            = appDatabase.priceHistoryDao().fetchAll()
 }

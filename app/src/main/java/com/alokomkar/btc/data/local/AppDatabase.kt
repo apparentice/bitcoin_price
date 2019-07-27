@@ -9,8 +9,9 @@ import com.alokomkar.btc.R
 import com.alokomkar.btc.data.local.dao.CurrentPriceDao
 import com.alokomkar.btc.data.local.dao.PriceHistoryDao
 import com.alokomkar.btc.data.local.entity.CurrentPrice
+import com.alokomkar.btc.data.local.entity.PriceHistory
 
-@Database( entities = [CurrentPrice::class], version = 1 )
+@Database( entities = [CurrentPrice::class, PriceHistory::class], version = 1 )
 abstract class AppDatabase : RoomDatabase() {
 
     abstract fun currentPriceDao() : CurrentPriceDao

@@ -14,42 +14,34 @@ class BTCRepositoryImpl(
 
     override fun getCurrentPrice(): LiveData<Resource<CurrentPrice>> {
         return object : NetworkBoundResource<CurrentPrice, CurrentPrice>(appExecutors) {
-            override fun saveCallResultToLocalDb(item: CurrentPrice) {
+            override fun saveCallResultToLocalDb(item: CurrentPrice)
+                    = serviceLocator.localDataSource.insertPrice(item)
 
-            }
+            override fun createNetworkCall(): LiveData<ApiResponse<CurrentPrice>>
+                    = serviceLocator.remoteDataSource.getCurrentPrice()
 
-            override fun createNetworkCall(): LiveData<ApiResponse<CurrentPrice>> {
-                TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
-            }
+            override fun loadFromLocalDatabase(): LiveData<CurrentPrice>
+                    = serviceLocator.localDataSource.getCurrentPrice()
 
-            override fun loadFromLocalDatabase(): LiveData<CurrentPrice> {
-                TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
-            }
-
-            override fun shouldFetch(data: CurrentPrice?): Boolean {
-                TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
-            }
+            override fun shouldFetch(data: CurrentPrice?): Boolean
+                    = data == null || serviceLocator.isNetworkConnected
 
         }.asLiveData()
     }
 
-    override fun getPriceHistory(): LiveData<Resource<ArrayList<PriceHistory>>> {
-        return object : NetworkBoundResource<ArrayList<PriceHistory>, ArrayList<PriceHistory>>(appExecutors) {
-            override fun saveCallResultToLocalDb(item: ArrayList<PriceHistory>) {
-                TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
-            }
+    override fun getPriceHistory(): LiveData<Resource<List<PriceHistory>>> {
+        return object : NetworkBoundResource<List<PriceHistory>, List<PriceHistory>>(appExecutors) {
+            override fun saveCallResultToLocalDb(item: List<PriceHistory>)
+                    = serviceLocator.localDataSource.insertAllPriceHistory(item)
 
-            override fun createNetworkCall(): LiveData<ApiResponse<ArrayList<PriceHistory>>> {
-                TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
-            }
+            override fun createNetworkCall(): LiveData<ApiResponse<List<PriceHistory>>>
+                    = serviceLocator.remoteDataSource.getPriceHistory()
 
-            override fun loadFromLocalDatabase(): LiveData<ArrayList<PriceHistory>> {
-                TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
-            }
+            override fun loadFromLocalDatabase(): LiveData<List<PriceHistory>>
+                    = serviceLocator.localDataSource.getPriceHistory()
 
-            override fun shouldFetch(data: ArrayList<PriceHistory>?): Boolean {
-                TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
-            }
+            override fun shouldFetch(data: List<PriceHistory>?): Boolean
+                    = data == null || serviceLocator.isNetworkConnected
 
         }.asLiveData()
     }

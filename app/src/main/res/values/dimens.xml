@@ -5,4 +5,6 @@
     <dimen name="default_margin">16dp</dimen>
     <dimen name="default_half_margin">8dp</dimen>
     <dimen name="default_big_margin">64dp</dimen>
+    <dimen name="progress_bar_dimen">24dp</dimen>
+    <dimen name="default_double_margin">32dp</dimen>
 </resources>
