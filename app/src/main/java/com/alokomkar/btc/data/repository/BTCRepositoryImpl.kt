@@ -29,7 +29,7 @@ class BTCRepositoryImpl(
         }.asLiveData()
     }
 
-    override fun getPriceHistory(): LiveData<Resource<List<PriceHistory>>> {
+    override fun getPriceHistory( fetchOffline : Boolean ): LiveData<Resource<List<PriceHistory>>> {
         return object : NetworkBoundResource<List<PriceHistory>, List<PriceHistory>>(appExecutors) {
             override fun saveCallResultToLocalDb(item: List<PriceHistory>)
                     = serviceLocator.localDataSource.insertAllPriceHistory(item)
@@ -41,7 +41,7 @@ class BTCRepositoryImpl(
                     = serviceLocator.localDataSource.getPriceHistory()
 
             override fun shouldFetch(data: List<PriceHistory>?): Boolean
-                    = data == null || serviceLocator.isNetworkConnected
+                    = !fetchOffline && (data == null || serviceLocator.isNetworkConnected)
 
         }.asLiveData()
     }

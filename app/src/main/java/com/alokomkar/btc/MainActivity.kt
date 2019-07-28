@@ -5,7 +5,6 @@ import android.util.Log
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProviders
-import androidx.recyclerview.widget.LinearLayoutManager
 import com.alokomkar.btc.data.Status
 import com.alokomkar.btc.extension.changeVisibility
 import com.alokomkar.btc.extension.observe
@@ -52,7 +51,7 @@ class MainActivity : AppCompatActivity() {
             observe(priceViewModel.getPriceHistory(fetchFromLocal)) {
                 it?.apply {
                     pbPriceHistory.changeVisibility(status == Status.LOADING)
-                    priceRefreshLayout.isRefreshing = false
+                    priceRefreshLayout.isRefreshing = (status == Status.LOADING )
                     if( status == Status.ERROR ) {
                         Log.d("NetworkResponse", "Failed : " + this.message)
                         showToast((this.message ?: "Unknown Error") + " : checking offline data")
