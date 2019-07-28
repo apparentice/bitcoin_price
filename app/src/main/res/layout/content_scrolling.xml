@@ -31,21 +31,14 @@
                 app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
                 tools:listitem="@layout/item_date"/>
 
-        <androidx.core.widget.NestedScrollView
-                app:layout_behavior="@string/appbar_scrolling_view_behavior"
+        <androidx.recyclerview.widget.RecyclerView
                 android:layout_width="match_parent"
-                android:layout_height="match_parent">
-
-            <androidx.recyclerview.widget.RecyclerView
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:id="@+id/rvPriceHistory"
-                    tools:listitem="@layout/item_price_history"
-                    app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-                    android:orientation="vertical"
-                    android:padding="@dimen/default_half_margin"/>
-
-        </androidx.core.widget.NestedScrollView>
+                android:layout_height="match_parent"
+                android:id="@+id/rvPriceHistory"
+                tools:listitem="@layout/item_price_history"
+                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                android:orientation="vertical"
+                android:padding="@dimen/default_half_margin"/>
     </LinearLayout>
 
 

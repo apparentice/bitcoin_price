@@ -5,6 +5,7 @@ import android.util.Log
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProviders
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.alokomkar.btc.data.Status
 import com.alokomkar.btc.extension.changeVisibility
 import com.alokomkar.btc.extension.observe
@@ -74,7 +75,7 @@ class MainActivity : AppCompatActivity() {
                             }
                             onItemClickListener = { _, _, item ->
                                 Log.d("SmoothScroll", "Position : " + item.index)
-                                //rvPriceHistory.layoutManager?.scrollToPosition(item.index + 2)
+                                rvPriceHistory.layoutManager?.scrollToPosition(item.index + 5)
                             }
                         }
                     }

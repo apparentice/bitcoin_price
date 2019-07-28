@@ -26,7 +26,7 @@ class PriceServiceImpl( private val priceApi: PriceApi, private val appExecutors
         priceLiveData.value = null
 
         priceApi.getCurrentPrice()
-            .subscribeOn(Schedulers.newThread())
+            .subscribeOn(Schedulers.from(appExecutors.networkIO()))
             .blockingSubscribe({
                 priceLiveData.value = ApiResponse.create(Response(null, mapper.mapToEntity(it)))
             }, {
