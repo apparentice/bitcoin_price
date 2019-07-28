@@ -8,4 +8,5 @@ import com.alokomkar.btc.data.remote.ApiResponse
 interface PriceService {
     fun getCurrentPrice() : LiveData<ApiResponse<CurrentPrice>>
     fun getPriceHistory() : LiveData<ApiResponse<List<PriceHistory>>>
+    fun dispose()
 }

@@ -15,6 +15,14 @@
             android:layout_height="match_parent"
             android:orientation="vertical">
 
+        <ProgressBar
+                android:layout_margin="@dimen/default_margin"
+                android:id="@+id/pbPriceHistory"
+                android:visibility="gone"
+                android:layout_gravity="center"
+                android:layout_width="@dimen/progress_bar_dimen"
+                android:layout_height="@dimen/progress_bar_dimen"/>
+
         <androidx.recyclerview.widget.RecyclerView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"

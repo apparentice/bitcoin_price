@@ -49,7 +49,8 @@ class MainActivity : AppCompatActivity() {
         }
         observe(priceViewModel.getPriceHistory()) {
             it?.apply {
-                priceRefreshLayout.isRefreshing = (status == Status.LOADING)
+                pbPriceHistory.changeVisibility(status == Status.LOADING)
+                priceRefreshLayout.isRefreshing = false
                 if( status == Status.ERROR ) {
                     Log.d("NetworkResponse", "Failed : " + this.message)
                 }
@@ -58,13 +59,23 @@ class MainActivity : AppCompatActivity() {
                     rvPriceHistory.apply {
                         adapter = PriceHistoryAdapter().apply {
                             removeAll()
-                            addAll(data ?: ArrayList())
+                            val items = data ?: ArrayList()
+                            addAll(items)
                         }
                     }
                     rvDate.apply {
                         adapter = PriceDateAdapter().apply {
                             removeAll()
-                            data?.forEach { addUnique(it.priceDate) }
+                            var itemIndex = 0
+                            data?.forEach {
+                                    item ->
+                                addUnique(PriceIndexedData(itemIndex, item.priceDate))
+                                itemIndex++
+                            }
+                            onItemClickListener = { _, _, item ->
+                                Log.d("SmoothScroll", "Position : " + item.index)
+                                //rvPriceHistory.layoutManager?.scrollToPosition(item.index + 2)
+                            }
                         }
                     }
                 }

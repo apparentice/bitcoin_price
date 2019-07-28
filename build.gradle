@@ -11,6 +11,7 @@ ext {
     okhttpVersion = '4.0.1'
     rxKotlinVersion = '2.4.0-RC3'
     javaCompatVersion = 1.8
+    pagingVersion = "2.1.0"
 }
 
 buildscript {

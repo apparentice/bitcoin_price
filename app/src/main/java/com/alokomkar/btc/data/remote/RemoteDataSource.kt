@@ -13,4 +13,6 @@ class RemoteDataSource( private val priceService: PriceService ) : PriceService 
     override fun getPriceHistory(): LiveData<ApiResponse<List<PriceHistory>>>
             = priceService.getPriceHistory()
 
+    override fun dispose() = priceService.dispose()
+
 }

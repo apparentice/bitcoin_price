@@ -32,7 +32,6 @@ class PriceServiceImpl( private val priceApi: PriceApi, private val appExecutors
             }, {
                 priceLiveData.value = ApiResponse.create(it)
             }, 1 )
-
         return priceLiveData
     }
 
@@ -41,18 +40,21 @@ class PriceServiceImpl( private val priceApi: PriceApi, private val appExecutors
         val priceHistoryLiveData = MutableLiveData<ApiResponse<List<PriceHistory>>>()
         val priceHistoryList = ArrayList<PriceHistory>()
 
-        priceApi.getPriceHistory()
-            .subscribeOn(Schedulers.newThread())
-            .blockingSubscribe(
-                {
-                    priceHistoryList.addAll(it)
-                    priceHistoryLiveData.value = ApiResponse.create(Response(null, priceHistoryList.toList()))
-                },
-                {
-                    priceHistoryLiveData.value = ApiResponse.create(it)
-                },
-                1000)
+        val d = priceApi.getPriceHistory()
+            .subscribeOn(Schedulers.from(appExecutors.networkIO()))
+            .observeOn(Schedulers.from(appExecutors.mainThread()))
+            .subscribe({
+                priceHistoryList.addAll(it)
+                priceHistoryLiveData.value = ApiResponse.create(Response(null, priceHistoryList.toList()))
+            }, {
+                priceHistoryLiveData.value = ApiResponse.create(it)
+            })
 
+        compositeDisposable.add(d)
         return priceHistoryLiveData
+    }
+
+    override fun dispose() {
+        compositeDisposable.dispose()
     }
 }

@@ -5,12 +5,12 @@ import com.alokomkar.btc.base.BaseViewHolder
 import kotlinx.android.synthetic.main.item_date.view.*
 
 class PriceDateViewHolder( viewGroup: ViewGroup)
-    : BaseViewHolder<String>(
+    : BaseViewHolder<PriceIndexedData>(
     viewGroup,
     R.layout.item_date
 ) {
 
-    override fun bindData(item: String) {
-        itemView.tvHeading.text = item
+    override fun bindData(item: PriceIndexedData) {
+        itemView.tvHeading.text = item.priceTimeStamp
     }
 }
