@@ -14,7 +14,7 @@ import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory
 import retrofit2.converter.gson.GsonConverterFactory
 import java.util.concurrent.TimeUnit
 
-class RetrofitApiProvider(private val application: BTCApplication, private val appExecutors: AppExecutors ) {
+class RetrofitApiProvider() {
 
     private val BASE_URL = "https://apiv2.bitcoinaverage.com/indices/global/"
     private val retrofit : Retrofit by lazy { makeRetrofit(

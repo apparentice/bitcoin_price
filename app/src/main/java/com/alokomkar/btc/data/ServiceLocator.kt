@@ -15,7 +15,7 @@ class ServiceLocator private constructor (
 ){
 
     private val appDatabase : AppDatabase by lazy { AppDatabase.getInstance(application) }
-    private val retrofitApiProvider : RetrofitApiProvider by lazy { RetrofitApiProvider(application, appExecutors) }
+    private val retrofitApiProvider : RetrofitApiProvider by lazy { RetrofitApiProvider() }
     private val priceService : PriceService by lazy { PriceServiceImpl(retrofitApiProvider.getPriceApiService(), appExecutors) }
 
     val remoteDataSource : RemoteDataSource by lazy { RemoteDataSource( priceService ) }
