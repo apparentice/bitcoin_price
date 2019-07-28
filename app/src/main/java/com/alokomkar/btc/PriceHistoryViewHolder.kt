@@ -18,7 +18,7 @@ class PriceHistoryViewHolder( viewGroup: ViewGroup )
     }
 
     override fun bindData(item: PriceHistory) {
-        itemView.tvDate.text = item.priceDate
+        itemView.tvDate.text = item.header
         itemView.tvCurrentPrice.text = "$ ${item.average}"
     }
 }

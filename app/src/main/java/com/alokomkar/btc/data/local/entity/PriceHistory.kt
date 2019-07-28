@@ -20,6 +20,9 @@ data class PriceHistory(
     @Ignore
     var priceDate = time.split(":")[0] + ":00"
 
+    @Ignore
+    var header = ""
+
     override fun equals(other: Any?): Boolean {
         if (this === other) return true
         if (javaClass != other?.javaClass) return false

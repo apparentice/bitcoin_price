@@ -48,40 +48,57 @@ class MainActivity : AppCompatActivity() {
                 }
             }
         }
-        observe(priceViewModel.getPriceHistory()) {
-            it?.apply {
-                pbPriceHistory.changeVisibility(status == Status.LOADING)
-                priceRefreshLayout.isRefreshing = false
-                if( status == Status.ERROR ) {
-                    Log.d("NetworkResponse", "Failed : " + this.message)
-                }
-                else if( status == Status.SUCCESS ) {
-                    Log.d("NetworkResponse", "Price history Success " + this.data?.size)
-                    rvPriceHistory.apply {
-                        adapter = PriceHistoryAdapter().apply {
-                            removeAll()
-                            val items = data ?: ArrayList()
-                            addAll(items)
-                        }
+        fun fetchPriceHistory( fetchFromLocal : Boolean ) {
+            observe(priceViewModel.getPriceHistory(fetchFromLocal)) {
+                it?.apply {
+                    pbPriceHistory.changeVisibility(status == Status.LOADING)
+                    priceRefreshLayout.isRefreshing = false
+                    if( status == Status.ERROR ) {
+                        Log.d("NetworkResponse", "Failed : " + this.message)
+                        showToast((this.message ?: "Unknown Error") + " : checking offline data")
+                        fetchPriceHistory(true)
                     }
-                    rvDate.apply {
-                        adapter = PriceDateAdapter().apply {
-                            removeAll()
-                            var itemIndex = 0
-                            data?.forEach {
-                                    item ->
-                                addUnique(PriceIndexedData(itemIndex, item.priceDate))
-                                itemIndex++
+                    else if( status == Status.SUCCESS ) {
+                        Log.d("NetworkResponse", "Price history Success " + this.data?.size)
+                        rvPriceHistory.apply {
+                            adapter = PriceHistoryAdapter().apply {
+                                removeAll()
+                                val items = data ?: ArrayList()
+                                var previousHeader = ""
+                                items.forEach{ item ->
+                                    if( previousHeader == "" ) {
+                                        item.header = item.priceDate
+                                        previousHeader = item.header
+                                    }
+                                    else if( previousHeader != item.priceDate ) {
+                                        item.header = item.priceDate
+                                        previousHeader = item.header
+                                    }
+                                }
+                                addAll(items)
                             }
-                            onItemClickListener = { _, _, item ->
-                                Log.d("SmoothScroll", "Position : " + item.index)
-                                rvPriceHistory.layoutManager?.scrollToPosition(item.index + 5)
+                        }
+                        rvDate.apply {
+                            adapter = PriceDateAdapter().apply {
+                                removeAll()
+                                var itemIndex = 0
+                                data?.forEach {
+                                        item ->
+                                    addUnique(PriceIndexedData(itemIndex, item.priceDate))
+                                    itemIndex++
+                                }
+                                onItemClickListener = { _, _, item ->
+                                    Log.d("SmoothScroll", "Position : " + item.index)
+                                    rvPriceHistory.smoothScrollToPosition(item.index + 5)
+                                }
                             }
                         }
                     }
                 }
             }
         }
+        fetchPriceHistory(false)
+
     }
 
 }

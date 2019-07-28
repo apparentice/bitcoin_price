@@ -9,6 +9,6 @@ class PriceViewModel( application: Application ) : BaseViewModel(application) {
     private val repository : BTCRepository = btcApplication.btcRepository
 
     fun getCurrentPrice() = repository.getCurrentPrice()
-    fun getPriceHistory() = repository.getPriceHistory()
+    fun getPriceHistory( fetchOffline : Boolean ) = repository.getPriceHistory()
 
 }
