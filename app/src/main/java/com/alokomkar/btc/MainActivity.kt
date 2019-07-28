@@ -66,11 +66,11 @@ class MainActivity : AppCompatActivity() {
                                 var previousHeader = ""
                                 items.forEach{ item ->
                                     if( previousHeader == "" ) {
-                                        item.header = item.priceDate
+                                        item.header = item.getPriceDate()
                                         previousHeader = item.header
                                     }
-                                    else if( previousHeader != item.priceDate ) {
-                                        item.header = item.priceDate
+                                    else if( previousHeader != item.getPriceDate() ) {
+                                        item.header = item.getPriceDate()
                                         previousHeader = item.header
                                     }
                                 }
@@ -83,7 +83,7 @@ class MainActivity : AppCompatActivity() {
                                 var itemIndex = 0
                                 data?.forEach {
                                         item ->
-                                    addUnique(PriceIndexedData(itemIndex, item.priceDate))
+                                    addUnique(PriceIndexedData(itemIndex, item.getPriceDate()))
                                     itemIndex++
                                 }
                                 onItemClickListener = { _, _, item ->

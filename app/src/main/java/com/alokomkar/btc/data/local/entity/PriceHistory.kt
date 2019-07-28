@@ -1,5 +1,7 @@
 package com.alokomkar.btc.data.local.entity
 
+import android.os.Parcel
+import android.os.Parcelable
 import androidx.annotation.NonNull
 import androidx.room.ColumnInfo
 import androidx.room.Entity
@@ -16,12 +18,30 @@ data class PriceHistory(
     @ColumnInfo(name = "timeStamp")
     @SerializedName("time")
     var time: String = ""
-) {
-    @Ignore
-    var priceDate = time.split(":")[0] + ":00"
+) : Parcelable {
+
+    fun getPriceDate() = time.split(":")[0] + ":00"
 
     @Ignore
-    var header = ""
+    var header : String = ""
+
+    constructor(parcel: Parcel) : this(
+        parcel.readDouble(),
+        parcel.readString() ?: ""
+    ) {
+        header = parcel.readString() ?: ""
+    }
+
+
+    override fun writeToParcel(parcel: Parcel, flags: Int) {
+        parcel.writeDouble(average)
+        parcel.writeString(time)
+        parcel.writeString(header)
+    }
+
+    override fun describeContents(): Int {
+        return 0
+    }
 
     override fun equals(other: Any?): Boolean {
         if (this === other) return true
@@ -29,16 +49,23 @@ data class PriceHistory(
 
         other as PriceHistory
 
-        if (average != other.average) return false
         if (time != other.time) return false
 
         return true
     }
 
     override fun hashCode(): Int {
-        var result = average.hashCode()
-        result = 31 * result + time.hashCode()
-        return result
+        return time.hashCode()
+    }
+
+    companion object CREATOR : Parcelable.Creator<PriceHistory> {
+        override fun createFromParcel(parcel: Parcel): PriceHistory {
+            return PriceHistory(parcel)
+        }
+
+        override fun newArray(size: Int): Array<PriceHistory?> {
+            return arrayOfNulls(size)
+        }
     }
 
 

@@ -9,10 +9,7 @@ import com.alokomkar.btc.data.mapper.PriceMapper
 import com.alokomkar.btc.data.remote.ApiResponse
 import com.alokomkar.btc.data.remote.Response
 import com.alokomkar.btc.data.remote.api.PriceApi
-import com.alokomkar.btc.data.remote.network_response.CurrentPriceResponse
-import io.reactivex.SingleObserver
 import io.reactivex.disposables.CompositeDisposable
-import io.reactivex.disposables.Disposable
 import io.reactivex.schedulers.Schedulers
 
 class PriceServiceImpl( private val priceApi: PriceApi, private val appExecutors: AppExecutors ) : PriceService {
@@ -41,15 +38,30 @@ class PriceServiceImpl( private val priceApi: PriceApi, private val appExecutors
         val priceHistoryList = ArrayList<PriceHistory>()
 
         val d = priceApi.getPriceHistory()
+            .map { items ->
+                var previousHeader = ""
+                items.forEach{ item ->
+                    if( previousHeader == "" ) {
+                        item.header = item.getPriceDate()
+                        previousHeader = item.header
+                    } else if( previousHeader != item.getPriceDate() ) {
+                        item.header = item.getPriceDate()
+                        previousHeader = item.header
+                    }
+                }
+                items
+            }
             .subscribeOn(Schedulers.from(appExecutors.networkIO()))
             .observeOn(Schedulers.from(appExecutors.mainThread()))
-            .subscribe({
-                priceHistoryList.addAll(it)
-                priceHistoryLiveData.value = ApiResponse.create(Response(null, priceHistoryList.toList()))
-            }, {
-                priceHistoryLiveData.value = ApiResponse.create(it)
-            })
-
+            .subscribe(
+                {
+                    priceHistoryList.clear()
+                    priceHistoryList.addAll(it)
+                    priceHistoryLiveData.value = ApiResponse.create(Response(null, priceHistoryList.toList()))
+                },
+                {
+                    priceHistoryLiveData.value = ApiResponse.create(it)
+                })
         compositeDisposable.add(d)
         return priceHistoryLiveData
     }
