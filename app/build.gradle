@@ -43,6 +43,9 @@ dependencies {
     // ViewModel and LiveData
     implementation "androidx.lifecycle:lifecycle-extensions:$lifeCycleVersion"
 
+    //Shared preferences
+    implementation "androidx.preference:preference-ktx:$preferenceVersion"
+
     //Paging
     implementation "androidx.paging:paging-runtime:$pagingVersion"
 

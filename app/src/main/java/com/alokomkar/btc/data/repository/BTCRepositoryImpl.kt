@@ -13,7 +13,7 @@ class BTCRepositoryImpl(
     private val appExecutors: AppExecutors ) : BTCRepository {
 
     override fun getCurrentPrice(): LiveData<Resource<CurrentPrice>> {
-        return object : NetworkBoundResource<CurrentPrice, CurrentPrice>(appExecutors) {
+        return object : NetworkBoundResource<CurrentPrice, CurrentPrice>(appExecutors, serviceLocator.sharedPreferenceSource) {
             override fun saveCallResultToLocalDb(item: CurrentPrice)
                     = serviceLocator.localDataSource.insertPrice(item)
 
@@ -24,13 +24,13 @@ class BTCRepositoryImpl(
                     = serviceLocator.localDataSource.getCurrentPrice()
 
             override fun shouldFetch(data: CurrentPrice?): Boolean
-                    = data == null //|| serviceLocator.isNetworkConnected
+                    = data == null || serviceLocator.isCacheExpired
 
         }.asLiveData()
     }
 
     override fun getPriceHistory( fetchOffline : Boolean ): LiveData<Resource<List<PriceHistory>>> {
-        return object : NetworkBoundResource<List<PriceHistory>, List<PriceHistory>>(appExecutors) {
+        return object : NetworkBoundResource<List<PriceHistory>, List<PriceHistory>>(appExecutors, serviceLocator.sharedPreferenceSource) {
             override fun saveCallResultToLocalDb(item: List<PriceHistory>)
                     = serviceLocator.localDataSource.insertAllPriceHistory(item)
 
@@ -41,7 +41,7 @@ class BTCRepositoryImpl(
                     = serviceLocator.localDataSource.getPriceHistory()
 
             override fun shouldFetch(data: List<PriceHistory>?): Boolean
-                    = !fetchOffline && (data == null || data.isEmpty() /*|| serviceLocator.isNetworkConnected*/)
+                    = !fetchOffline && (data == null || serviceLocator.isCacheExpired)
 
         }.asLiveData()
     }

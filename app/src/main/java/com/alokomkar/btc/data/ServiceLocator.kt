@@ -4,6 +4,8 @@ import com.alokomkar.btc.AppExecutors
 import com.alokomkar.btc.BTCApplication
 import com.alokomkar.btc.data.local.AppDatabase
 import com.alokomkar.btc.data.local.LocalDataSource
+import com.alokomkar.btc.data.local.preferences.SharedPreferenceSource
+import com.alokomkar.btc.data.local.preferences.SharedPreferenceSourceImpl
 import com.alokomkar.btc.data.remote.RemoteDataSource
 import com.alokomkar.btc.data.remote.RetrofitApiProvider
 import com.alokomkar.btc.data.remote.service.PriceService
@@ -20,11 +22,12 @@ class ServiceLocator private constructor (
 
     val remoteDataSource : RemoteDataSource by lazy { RemoteDataSource( priceService ) }
     val localDataSource : LocalDataSource by lazy { LocalDataSource( appDatabase, appExecutors ) }
+    val sharedPreferenceSource : SharedPreferenceSource by lazy { SharedPreferenceSourceImpl( application ) }
 
-    //Boolean to track if network is connected
-    var isNetworkConnected = application.isNetworkAvailable()
+    var isCacheExpired = System.currentTimeMillis() - sharedPreferenceSource.lastUpdatedTimeStamp > 2 * 60 * 1000
 
     companion object {
+
         @Volatile private var instance : ServiceLocator ?= null
         fun getInstance( application: BTCApplication, appExecutors: AppExecutors )
                 = instance ?: synchronized(this) {

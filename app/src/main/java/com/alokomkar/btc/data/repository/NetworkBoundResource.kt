@@ -6,13 +6,15 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MediatorLiveData
 import com.alokomkar.btc.AppExecutors
 import com.alokomkar.btc.data.Resource
+import com.alokomkar.btc.data.ServiceLocator
+import com.alokomkar.btc.data.local.preferences.SharedPreferenceSource
 import com.alokomkar.btc.data.remote.ApiEmptyResponse
 import com.alokomkar.btc.data.remote.ApiErrorResponse
 import com.alokomkar.btc.data.remote.ApiResponse
 import com.alokomkar.btc.data.remote.ApiSuccessResponse
 
 abstract class NetworkBoundResource<ResultType, RequestType>
-@MainThread constructor(private val appExecutors: AppExecutors) {
+@MainThread constructor(private val appExecutors: AppExecutors, private val sharedPreferenceSource: SharedPreferenceSource ) {
 
 
     private val result = MediatorLiveData<Resource<ResultType>>()
@@ -56,6 +58,7 @@ abstract class NetworkBoundResource<ResultType, RequestType>
                 is ApiSuccessResponse -> {
                     appExecutors.diskIO().execute {
                         saveCallResultToLocalDb(processResponseData(remoteResponse))
+                        sharedPreferenceSource.lastUpdatedTimeStamp = System.currentTimeMillis()
                         appExecutors.mainThread().execute {
                             // we specially request a new live data,
                             // otherwise we will get immediately last cached value,
@@ -76,6 +79,8 @@ abstract class NetworkBoundResource<ResultType, RequestType>
                     }
                 }
                 is ApiErrorResponse -> {
+                    //Reset timer on error
+                    sharedPreferenceSource.lastUpdatedTimeStamp = 0L
                     onFetchFailed()
                     result.addSource(dbSource) { newData ->
                         setValue(Resource.error(remoteResponse.errorMessage, newData))
