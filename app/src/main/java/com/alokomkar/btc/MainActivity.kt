@@ -1,5 +1,8 @@
 package com.alokomkar.btc
 
+import android.content.BroadcastReceiver
+import android.content.Context
+import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.widget.Toast
@@ -8,6 +11,7 @@ import androidx.lifecycle.ViewModelProviders
 import com.alokomkar.btc.data.Status
 import com.alokomkar.btc.extension.changeVisibility
 import com.alokomkar.btc.extension.observe
+import com.alokomkar.btc.extension.showSnackBar
 import kotlinx.android.synthetic.main.activity_scrolling.*
 import kotlinx.android.synthetic.main.content_scrolling.*
 
@@ -28,7 +32,7 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun showToast(message: String) {
-        Toast.makeText(this, message, Toast.LENGTH_SHORT).show()
+
     }
 
     private fun loadContent() {
@@ -38,7 +42,9 @@ class MainActivity : AppCompatActivity() {
                 tvCurrentPrice.changeVisibility( status != Status.LOADING )
                 if( status == Status.ERROR ) {
                     Log.d("NetworkResponse", "Failed : " + this.message)
-                    showToast(this.message ?: "Unknown Error")
+                    tvCurrentPrice.showSnackBar(this.message ?: "Unknown Error", R.string.retry) {
+                        loadContent()
+                    }
                     tvCurrentPrice.text = "Oops!!"
                 }
                 else if( status == Status.SUCCESS ) {
@@ -97,6 +103,13 @@ class MainActivity : AppCompatActivity() {
             }
         }
         fetchPriceHistory(false)
+
+    }
+
+    class NetworkConnectivityReceiver : BroadcastReceiver() {
+        override fun onReceive(contxt: Context?, intent: Intent?) {
+
+        }
 
     }
 

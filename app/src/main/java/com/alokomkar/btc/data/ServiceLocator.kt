@@ -22,7 +22,7 @@ class ServiceLocator private constructor (
     val localDataSource : LocalDataSource by lazy { LocalDataSource( appDatabase, appExecutors ) }
 
     //Boolean to track if network is connected
-    val isNetworkConnected get() = application.isNetworkAvailable
+    var isNetworkConnected = application.isNetworkAvailable()
 
     companion object {
         @Volatile private var instance : ServiceLocator ?= null

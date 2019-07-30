@@ -1,7 +1,5 @@
 package com.alokomkar.btc.data.remote
 
-import com.alokomkar.btc.AppExecutors
-import com.alokomkar.btc.BTCApplication
 import com.alokomkar.btc.BuildConfig
 import com.alokomkar.btc.data.remote.api.PriceApi
 import com.google.gson.Gson

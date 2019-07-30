@@ -14,14 +14,12 @@ class BTCApplication : Application() {
     // lazy returns same instance on subsequent access - rectify post testing
     private val serviceLocator : ServiceLocator by lazy { ServiceLocator.getInstance(this, appExecutors) }
 
-
     val btcRepository : BTCRepository by lazy { BTCRepositoryImpl(serviceLocator, appExecutors) }
 
-    val isNetworkAvailable: Boolean
-        get() {
-            val cm = getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
-            val activeNetwork = cm.activeNetworkInfo
-            return activeNetwork != null && activeNetwork.isConnectedOrConnecting
-        }
+    fun isNetworkAvailable() : Boolean {
+        val cm = getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
+        val activeNetwork = cm.activeNetworkInfo
+        return activeNetwork != null && activeNetwork.isConnectedOrConnecting
+    }
 
 }

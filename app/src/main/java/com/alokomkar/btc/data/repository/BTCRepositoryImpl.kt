@@ -24,7 +24,7 @@ class BTCRepositoryImpl(
                     = serviceLocator.localDataSource.getCurrentPrice()
 
             override fun shouldFetch(data: CurrentPrice?): Boolean
-                    = data == null || serviceLocator.isNetworkConnected
+                    = data == null //|| serviceLocator.isNetworkConnected
 
         }.asLiveData()
     }
@@ -41,7 +41,7 @@ class BTCRepositoryImpl(
                     = serviceLocator.localDataSource.getPriceHistory()
 
             override fun shouldFetch(data: List<PriceHistory>?): Boolean
-                    = !fetchOffline && (data == null || serviceLocator.isNetworkConnected)
+                    = !fetchOffline && (data == null || data.isEmpty() /*|| serviceLocator.isNetworkConnected*/)
 
         }.asLiveData()
     }
