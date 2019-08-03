@@ -1,9 +1,11 @@
 package com.alokomkar.btc
 
 import android.os.Bundle
+import android.view.View
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProviders
+import com.alokomkar.btc.base.OnAdapterItemClickListener
 import com.alokomkar.btc.data.Status
 import com.alokomkar.btc.extension.changeVisibility
 import com.alokomkar.btc.extension.observe
@@ -84,8 +86,11 @@ class MainActivity : AppCompatActivity() {
                                 addUnique(PriceIndexedData(itemIndex, item.getPriceDate()))
                                 itemIndex++
                             }
-                            onItemClickListener = { _, _, item ->
-                                rvPriceHistory.smoothScrollToPosition(item.index + 5)
+                            onAdapterItemClickListener = object : OnAdapterItemClickListener {
+                                override fun onItemClick(view: View, position: Int) {
+                                    val item = getItemAtPosition(position)
+                                    rvPriceHistory.smoothScrollToPosition(item.index + 5)
+                                }
                             }
                         }
                     }

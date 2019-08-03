@@ -1,19 +1,22 @@
 package com.alokomkar.btc.base
 
 import android.view.LayoutInflater
-import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 
-abstract class BaseViewHolder<T>(viewGroup: ViewGroup, layoutId : Int)
+abstract class BaseViewHolder<T>(
+    viewGroup: ViewGroup,
+    layoutId : Int,
+    onAdapterItemClickListener : OnAdapterItemClickListener ?= null )
     : RecyclerView.ViewHolder( LayoutInflater.from(viewGroup.context).inflate(layoutId, viewGroup, false)) {
 
-    var itemClickListener: ((View) -> Unit)? = null
-
     init {
-        itemView.setOnClickListener { itemClickListener?.invoke(it) }
+        itemView.setOnClickListener {
+            val itemPosition = adapterPosition
+            if( itemPosition != RecyclerView.NO_POSITION )
+                onAdapterItemClickListener?.onItemClick(it, itemPosition)
+        }
     }
-
     abstract fun bindData( item : T )
 
 }

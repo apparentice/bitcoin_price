@@ -1,16 +1,17 @@
 package com.alokomkar.btc.base
 
-import android.view.View
 import androidx.annotation.CallSuper
 import androidx.recyclerview.widget.RecyclerView
 
 abstract class BaseRecyclerViewAdapter<T, VH : BaseViewHolder<T>> : RecyclerView.Adapter<VH>() {
 
-    var onItemClickListener : ((view : View, position : Int, item : T) -> Unit)? = null
+    var onAdapterItemClickListener : OnAdapterItemClickListener ?= null
     var onEmptyOrNot: ((isEmpty: Boolean) -> Unit)? = null
     var onReadyToLoadMore: (() -> Unit)? = null
 
     protected var itemsList: MutableList<T> = mutableListOf()
+
+    fun getItemAtPosition( position: Int ) : T = itemsList[position]
 
     fun addAll(list: List<T>) {
         val startPosition = itemsList.size
