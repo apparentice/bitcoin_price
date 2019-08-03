@@ -11,6 +11,9 @@ class SharedPreferenceSourceImpl( private val application: Application ) : Share
         get() = sharedPreferences.getLong(PREF_LAST_UPDATED, 0)
         set(value) = sharedPreferences.edit().putLong(PREF_LAST_UPDATED, value).apply()
 
+
+    override var isCacheExpired : Boolean = System.currentTimeMillis() - lastUpdatedTimeStamp > 2 * 60 * 1000
+
     companion object{
         private const val PREF_LAST_UPDATED : String = "dataLastUpdated"
     }

@@ -52,7 +52,6 @@ class MainActivity : AppCompatActivity() {
         priceViewModel.getPriceHistory(false)
         observe(priceViewModel.priceHistoryLiveData) {
             it?.apply {
-                pbPriceHistory.changeVisibility(status == Status.LOADING)
                 priceRefreshLayout.isRefreshing = (status == Status.LOADING )
                 if( status == Status.ERROR ) {
                     showToast((this.message ?: "Unknown Error") + " : checking offline data")

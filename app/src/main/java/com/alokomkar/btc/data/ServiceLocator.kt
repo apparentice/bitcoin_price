@@ -24,7 +24,6 @@ class ServiceLocator private constructor (
     val localDataSource : LocalDataSource by lazy { LocalDataSource( appDatabase, appExecutors ) }
     val sharedPreferenceSource : SharedPreferenceSource by lazy { SharedPreferenceSourceImpl( application ) }
 
-    var isCacheExpired = System.currentTimeMillis() - sharedPreferenceSource.lastUpdatedTimeStamp > 2 * 60 * 1000
 
     companion object {
 
