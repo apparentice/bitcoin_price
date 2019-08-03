@@ -27,7 +27,6 @@ class MainActivity : AppCompatActivity() {
         fab.setOnClickListener { loadContent() }
         priceRefreshLayout.setOnRefreshListener { loadContent() }
         setObservers()
-
     }
 
     private fun setObservers() {

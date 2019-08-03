@@ -24,8 +24,7 @@ class PriceViewModel( application: Application ) : BaseViewModel(application) {
 
     private val priceHistoryMutableLiveData : MutableLiveData<Resource<List<PriceHistory>>> = MutableLiveData()
     val priceHistoryLiveData : LiveData<Resource<List<PriceHistory>>>
-            = Transformations.switchMap(priceHistoryMutableLiveData) {
-            priceHistoryList ->
+            = Transformations.switchMap(priceHistoryMutableLiveData) { priceHistoryList ->
         if( priceHistoryList == null ) AbsentLiveData.create()
         else repository.getPriceHistory()
     }

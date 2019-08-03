@@ -41,7 +41,7 @@ class BTCRepositoryImpl(
                     = serviceLocator.localDataSource.getPriceHistory()
 
             override fun shouldFetch(data: List<PriceHistory>?): Boolean
-                    = (data == null || serviceLocator.sharedPreferenceSource.isCacheExpired())
+                    = (data == null || data.isEmpty() || serviceLocator.sharedPreferenceSource.isCacheExpired())
 
         }.asLiveData()
     }
