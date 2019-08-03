@@ -12,12 +12,8 @@ class PriceHistoryViewHolder( viewGroup: ViewGroup )
     R.layout.item_price_history
 ) {
 
-    fun bindData( item : PriceHistory, isHeaderDisplayed : Boolean ) {
-        itemView.cvDate.changeVisibility(isHeaderDisplayed)
-        bindData(item)
-    }
-
     override fun bindData(item: PriceHistory) {
+        itemView.cvDate.changeVisibility(item.header.isBlank())
         itemView.tvDate.text = item.header
         itemView.tvCurrentPrice.text = "$ ${item.average}"
     }

@@ -13,6 +13,6 @@ class PriceHistoryAdapter : BaseRecyclerViewAdapter<PriceHistory, PriceHistoryVi
     override fun onBindViewHolder(holder: PriceHistoryViewHolder, position: Int) {
         super.onBindViewHolder(holder, position)
         val item = itemsList[position]
-        holder.bindData(item, item.header.isNotEmpty() )
+        holder.bindData(item)
     }
 }
