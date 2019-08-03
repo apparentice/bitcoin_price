@@ -26,17 +26,11 @@ class MainActivity : AppCompatActivity() {
         loadContent()
         fab.setOnClickListener { loadContent() }
         priceRefreshLayout.setOnRefreshListener { loadContent() }
+        setObservers()
 
     }
 
-    private fun showToast(message: String) =
-        Toast.makeText(this, message, Toast.LENGTH_SHORT).show()
-
-    private fun loadContent() {
-
-        priceViewModel.getCurrentPrice()
-        priceViewModel.getPriceHistory()
-
+    private fun setObservers() {
         observe(priceViewModel.currentPriceLiveData) {
             it?.apply {
                 pbCurrentPrice.changeVisibility(status == Status.LOADING)
@@ -102,7 +96,14 @@ class MainActivity : AppCompatActivity() {
                 }
             }
         }
+    }
 
+    private fun showToast(message: String) =
+        Toast.makeText(this, message, Toast.LENGTH_SHORT).show()
+
+    private fun loadContent() {
+        priceViewModel.getCurrentPrice()
+        priceViewModel.getPriceHistory()
     }
 
 

@@ -16,10 +16,4 @@ class BTCApplication : Application() {
 
     val btcRepository : BTCRepository by lazy { BTCRepositoryImpl(serviceLocator, appExecutors) }
 
-    fun isNetworkAvailable() : Boolean {
-        val cm = getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
-        val activeNetwork = cm.activeNetworkInfo
-        return activeNetwork != null && activeNetwork.isConnectedOrConnecting
-    }
-
 }
