@@ -7,5 +7,5 @@ import com.alokomkar.btc.data.local.entity.PriceHistory
 
 interface BTCRepository {
     fun getCurrentPrice() : LiveData<Resource<CurrentPrice>>
-    fun getPriceHistory(fetchOffline : Boolean) : LiveData<Resource<List<PriceHistory>>>
+    fun getPriceHistory() : LiveData<Resource<List<PriceHistory>>>
 }

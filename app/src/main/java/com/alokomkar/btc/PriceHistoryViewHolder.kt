@@ -13,7 +13,7 @@ class PriceHistoryViewHolder( viewGroup: ViewGroup )
 ) {
 
     override fun bindData(item: PriceHistory) {
-        itemView.cvDate.changeVisibility(item.header.isBlank())
+        itemView.cvDate.changeVisibility(item.header.isNotBlank())
         itemView.tvDate.text = item.header
         itemView.tvCurrentPrice.text = "$ ${item.average}"
     }

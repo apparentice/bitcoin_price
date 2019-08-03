@@ -33,66 +33,72 @@ class MainActivity : AppCompatActivity() {
         Toast.makeText(this, message, Toast.LENGTH_SHORT).show()
 
     private fun loadContent() {
+
         priceViewModel.getCurrentPrice()
+        priceViewModel.getPriceHistory()
+
         observe(priceViewModel.currentPriceLiveData) {
             it?.apply {
                 pbCurrentPrice.changeVisibility(status == Status.LOADING)
                 tvCurrentPrice.changeVisibility(status != Status.LOADING)
-                if (status == Status.ERROR) {
-                    tvCurrentPrice.showSnackBar(this.message ?: "Unknown Error", R.string.retry) {
-                        loadContent()
+                when( status ) {
+                    Status.ERROR -> {
+                        tvCurrentPrice.showSnackBar(this.message ?: "Unknown Error", R.string.retry) {
+                            loadContent()
+                        }
+                        tvCurrentPrice.text = getString(R.string.oops)
                     }
-                    tvCurrentPrice.text = getString(R.string.oops)
-                } else if (status == Status.SUCCESS) {
-                    tvCurrentPrice.text = "Current Price : $ ${this.data?.sellingPrice}"
+                    Status.SUCCESS -> {
+                        tvCurrentPrice.text = "Current Price : $ ${this.data?.sellingPrice}"
+                    }
+                    else -> {}
                 }
             }
         }
 
-        priceViewModel.getPriceHistory(false)
         observe(priceViewModel.priceHistoryLiveData) {
             it?.apply {
                 priceRefreshLayout.isRefreshing = (status == Status.LOADING )
-                if( status == Status.ERROR ) {
-                    showToast((this.message ?: "Unknown Error") + " : checking offline data")
-                    priceViewModel.getPriceHistory(true)
-                }
-                else if( status == Status.SUCCESS ) {
-                    rvPriceHistory.apply {
-                        adapter = PriceHistoryAdapter().apply {
-                            removeAll()
-                            val items = data ?: ArrayList()
-                            var previousHeader = ""
-                            items.forEach{ item ->
-                                if( previousHeader == "" ) {
-                                    item.header = item.getPriceDate()
-                                    previousHeader = item.header
-                                }
-                                else if( previousHeader != item.getPriceDate() ) {
-                                    item.header = item.getPriceDate()
-                                    previousHeader = item.header
-                                }
-                            }
-                            addAll(items)
-                        }
+                when (status) {
+                    Status.ERROR -> {
+                        showToast((this.message ?: "Unknown Error") + " : checking offline data")
                     }
-                    rvDate.apply {
-                        adapter = PriceDateAdapter().apply {
-                            removeAll()
-                            var itemIndex = 0
-                            data?.forEach {
-                                    item ->
-                                addUnique(PriceIndexedData(itemIndex, item.getPriceDate()))
-                                itemIndex++
-                            }
-                            onAdapterItemClickListener = object : OnAdapterItemClickListener {
-                                override fun onItemClick(view: View, position: Int) {
-                                    val item = getItemAtPosition(position)
-                                    rvPriceHistory.smoothScrollToPosition(item.index + 5)
+                    Status.SUCCESS -> {
+                        rvPriceHistory.apply {
+                            adapter = PriceHistoryAdapter().apply {
+                                removeAll()
+                                val items = data ?: ArrayList()
+                                var previousHeader = ""
+                                items.forEach{ item ->
+                                    if( previousHeader == "" ) {
+                                        item.header = item.getPriceDate()
+                                        previousHeader = item.header
+                                    } else if( previousHeader != item.getPriceDate() ) {
+                                        item.header = item.getPriceDate()
+                                        previousHeader = item.header
+                                    }
                                 }
+                                addAll(items)
                             }
                         }
+                        rvDate.apply {
+                            adapter = PriceDateAdapter().apply {
+                                removeAll()
+                                var itemIndex = 0
+                                data?.forEach { item ->
+                                    addUnique(PriceIndexedData(itemIndex, item.getPriceDate()))
+                                    itemIndex++
+                                }
+                                onAdapterItemClickListener = object : OnAdapterItemClickListener {
+                                    override fun onItemClick(view: View, position: Int) {
+                                        val item = getItemAtPosition(position)
+                                        rvPriceHistory.smoothScrollToPosition(item.index + 5)
+                                    }
+                                }
+                            }
+                        }
                     }
+                    else -> {}
                 }
             }
         }
