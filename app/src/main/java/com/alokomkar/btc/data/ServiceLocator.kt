@@ -11,7 +11,7 @@ import com.alokomkar.btc.data.remote.RetrofitApiProvider
 import com.alokomkar.btc.data.remote.service.PriceService
 import com.alokomkar.btc.data.remote.service.PriceServiceImpl
 
-class ServiceLocator private constructor (
+class ServiceLocator constructor (
     private val application : BTCApplication,
     private val appExecutors: AppExecutors
 ){
@@ -25,7 +25,7 @@ class ServiceLocator private constructor (
     val sharedPreferenceSource : SharedPreferenceSource by lazy { SharedPreferenceSourceImpl( application ) }
 
 
-    companion object {
+    /*companion object {
 
         @Volatile private var instance : ServiceLocator ?= null
         fun getInstance( application: BTCApplication, appExecutors: AppExecutors )
@@ -35,6 +35,6 @@ class ServiceLocator private constructor (
                 instance = it
             }
         }
-    }
+    }*/
 
 }

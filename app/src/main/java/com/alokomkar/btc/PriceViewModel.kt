@@ -35,4 +35,9 @@ class PriceViewModel( application: Application ) : BaseViewModel(application) {
     fun getPriceHistory() {
         priceHistoryMutableLiveData.value = repository.getPriceHistory().value
     }
+
+    override fun onCleared() {
+        super.onCleared()
+        repository.dispose()
+    }
 }
