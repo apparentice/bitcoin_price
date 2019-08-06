@@ -10,7 +10,6 @@ interface BaseDao<T> {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun insert( vararg item : T )
 
-
     @Update(onConflict = OnConflictStrategy.REPLACE)
     fun update( vararg item : T )
 

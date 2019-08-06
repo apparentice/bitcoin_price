@@ -9,4 +9,9 @@ import androidx.room.PrimaryKey
 data class CurrentPrice(@PrimaryKey @ColumnInfo(name ="priceId") @NonNull val id : Int = 1,
                         var askingPrice : Double,
                         var sellingPrice : Double,
-                        var lastUpdateTimeStamp : Long )
+                        var lastUpdateTimeStamp : Long ) {
+
+    override fun toString(): String {
+        return "CurrentPrice(askingPrice=$askingPrice, sellingPrice=$sellingPrice, lastUpdateTimeStamp=$lastUpdateTimeStamp)"
+    }
+}

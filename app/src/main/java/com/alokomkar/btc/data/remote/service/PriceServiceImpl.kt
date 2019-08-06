@@ -1,5 +1,6 @@
 package com.alokomkar.btc.data.remote.service
 
+import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.alokomkar.btc.AppExecutors
@@ -22,13 +23,20 @@ class PriceServiceImpl( private val priceApi: PriceApi, private val appExecutors
         val priceLiveData : MutableLiveData<ApiResponse<CurrentPrice>> = MutableLiveData()
         priceLiveData.value = null
 
-        priceApi.getCurrentPrice()
+        val d = priceApi.getCurrentPrice()
             .subscribeOn(Schedulers.from(appExecutors.networkIO()))
-            .blockingSubscribe({
-                priceLiveData.value = ApiResponse.create(Response(null, mapper.mapToEntity(it)))
-            }, {
-                priceLiveData.value = ApiResponse.create(it)
-            }, 1 )
+            .observeOn(Schedulers.from(appExecutors.mainThread()))
+            .subscribe(
+                {
+                    priceLiveData.value = null
+                    priceLiveData.value = ApiResponse.create(Response(null, mapper.mapToEntity(it)))
+                    Log.d("APIImpl", "PriceData : $it")
+                },
+                {
+                    priceLiveData.value = ApiResponse.create(it)
+                }
+            )
+        compositeDisposable.add(d)
         return priceLiveData
     }
 
@@ -38,19 +46,6 @@ class PriceServiceImpl( private val priceApi: PriceApi, private val appExecutors
         val priceHistoryList = ArrayList<PriceHistory>()
 
         val d = priceApi.getPriceHistory()
-            .map { items ->
-                var previousHeader = ""
-                items.forEach{ item ->
-                    if( previousHeader == "" ) {
-                        item.header = item.getPriceDate()
-                        previousHeader = item.header
-                    } else if( previousHeader != item.getPriceDate() ) {
-                        item.header = item.getPriceDate()
-                        previousHeader = item.header
-                    }
-                }
-                items
-            }
             .subscribeOn(Schedulers.from(appExecutors.networkIO()))
             .observeOn(Schedulers.from(appExecutors.mainThread()))
             .subscribe(

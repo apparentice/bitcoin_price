@@ -105,5 +105,4 @@ class MainActivity : AppCompatActivity() {
         priceViewModel.getPriceHistory()
     }
 
-
 }
